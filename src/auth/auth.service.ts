@@ -4,6 +4,7 @@ import { UserService } from 'src/user/user.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './jwt-payload.interface';
+import { Role } from '@prisma/client';
 @Injectable()
 export class AuthService {
     constructor(private readonly userService: UserService,
@@ -33,8 +34,11 @@ export class AuthService {
             throw new Error('Invalid credentials');
 
         }
-        const payload:JwtPayload={name:user.name};
-        const token=this.jwtService.sign(payload);
+        const payload: JwtPayload = { 
+            name: user.name, 
+            role: user.role as Role // Eğer Prisma'dan string dönüyorsa TypeScript'e Role olduğunu belirt
+          };
+                  const token=this.jwtService.sign(payload);
         return { access_token: token };  // Token'ı geri döndürüyoruz
 
 
@@ -42,7 +46,7 @@ export class AuthService {
 
     //Kullanıcı kayıt olma fonksiyonu
     async register(name: string, password: string, email: string) {
-        return this.userService.createUser(name, password, email);
-    }
+        return this.userService.createUser(name, password, email, Role.USER);
+      }
 
 }
