@@ -30,7 +30,7 @@ export class UserService {
 
     //Kullanıcı bulma fonskiyonumuz.
     async allUsers() {
-        return this.prisma.user.findMany();
+        return this.prisma.user.findMany({where: {role: 'USER'}});
     }
 
     async deleteUser(email: string) {
@@ -42,8 +42,6 @@ export class UserService {
         //kullanıcıyı silelim.
         await this.prisma.user.delete({ where: { email } });
         return { message: "Kullanıcı Başarıyla Silindi!" };
-
-
     }
 
 
