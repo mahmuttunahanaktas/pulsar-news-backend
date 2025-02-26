@@ -8,12 +8,13 @@ import { PrismaService } from 'prisma/prisma.service';
 import { PrismaModule } from 'prisma/prisma.module';
 
 @Module({
-  imports:[PrismaModule,UserModule,JwtModule.register({
+  imports: [PrismaModule, UserModule, JwtModule.register({
     secret: 'secretKey', // Bu şifreyi güçlü ve gizli bir şeyle değiştirin
     signOptions: { expiresIn: '1h' }, // Token'ın geçerlilik süresi
+    global: true,
   })],
-  providers: [AuthService,UserService],
+  providers: [AuthService, UserService],
   controllers: [AuthController],
-  exports:[AuthService]
+  exports: [AuthService]
 })
-export class AuthModule {}
+export class AuthModule { }
