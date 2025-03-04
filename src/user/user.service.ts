@@ -8,15 +8,15 @@ export class UserService {
     constructor(private prisma: PrismaService) { }
 
     //Kullanıcı Oluşturma fonskiyonu
-    async createUser(name:string,password:string,email:string,role:Role){
+    async createUser(name: string, password: string, email: string, role: Role) {
         //önce şifreyi alıp hashleyelim sonrada haslenmiş şifreyle
         //birlikte diğer verileri de user tablomuza şutlayalım.
-        const hashedPassword=await bcrypt.hash(password,10);
+        const hashedPassword = await bcrypt.hash(password, 10);
         return this.prisma.user.create({
-            data:{
+            data: {
                 name,
                 email,
-                password:hashedPassword,
+                password: hashedPassword,
                 role,
             }
         })
@@ -28,9 +28,20 @@ export class UserService {
         return this.prisma.user.findUnique({ where: { email } });
     }
 
+    //Kullanıcıyı güncelleme fonksiyonu.
+    async updateUser(email: string, newemail: string, newname: string) {     
+        return this.prisma.user.update({
+            where: { email },
+            data: {
+                email: newemail,
+                name: newname,
+            },
+        });
+    }
+
     //Kullanıcı bulma fonskiyonumuz.
     async allUsers() {
-        return this.prisma.user.findMany({where: {role: 'USER'}});
+        return this.prisma.user.findMany({ where: { role: 'USER' } });
     }
 
     async deleteUser(email: string) {

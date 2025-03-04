@@ -1,6 +1,5 @@
-import { Controller, Get, Delete, Param } from '@nestjs/common';
+import { Controller, Get, Delete, Param,Patch ,Body} from '@nestjs/common';
 import { UserService } from './user.service';
-import { resolveSoa } from 'dns';
 
 @Controller('user')
 export class UserController {
@@ -16,8 +15,19 @@ export class UserController {
         return this.userService.deleteUser(email);
     }
 
+    @Get('findUsers/:email')
+    async findUser(@Param('email') email: string) {
+        return this.userService.findUser(email);
+    }
 
+    @Patch('/update')
+    async updateUser(
+        @Body('email') email:string,
+        @Body('newemail') newemail:string,
+        @Body('newname') newname:string,
+    )
+    {
+        return this.userService.updateUser(email,newemail,newname);
 
-
-
+    }
 }
