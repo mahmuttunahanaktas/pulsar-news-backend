@@ -23,7 +23,9 @@ export class AdminController {
     async deleteUser(@Param('email') email: string) {
         return this.adminService.deleteUser(email);
     }
-    //tüm adminleri listeleten fonksiyonu service'den çekelim
+
+
+
     @Post('createAdmin')
     async createAdmin(@Body() body: { name: string, password: string, email: string }) {
         return this.adminService.createAdmin(body.name, body.password, body.email);
